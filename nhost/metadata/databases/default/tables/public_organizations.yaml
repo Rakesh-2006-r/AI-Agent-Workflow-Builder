@@ -29,6 +29,12 @@ select_permissions:
       org_members:
         user_id:
           _eq: X-Hasura-User-Id
+insert_permissions:
+- role: user
+  permission:
+    check: {}
+    columns:
+    - name
 update_permissions:
 - role: user
   permission:

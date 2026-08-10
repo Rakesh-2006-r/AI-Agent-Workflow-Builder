@@ -32,6 +32,20 @@ const CREATE_WORKFLOW = gql`
   }
 `;
 
+const CREATE_ORG = gql`
+  mutation CreateOrg($name: String!, $userId: uuid!) {
+    insert_organizations_one(object: {
+      name: $name, 
+      org_members: {
+        data: [{ user_id: $userId, role: "owner" }]
+      }
+    }) {
+      id
+      name
+    }
+  }
+`;
+
 export default function Dashboard({ userId }: { userId: any }) {
   const { data, loading, error, refetch } = useQuery(GET_ORGS_AND_WORKFLOWS, {
     variables: { userId },
@@ -39,13 +53,42 @@ export default function Dashboard({ userId }: { userId: any }) {
   });
 
   const [createWorkflow] = useMutation(CREATE_WORKFLOW);
+  const [createOrg] = useMutation(CREATE_ORG);
   const [activeWorkflowId, setActiveWorkflowId] = useState<string | null>(null);
+  const [isCreatingOrg, setIsCreatingOrg] = useState(false);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading data: {error.message}</div>;
 
   const orgs = data?.organizations || [];
-  if (orgs.length === 0) return <div>You are not a member of any organization.</div>;
+  if (orgs.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 text-gray-400 space-y-4">
+        <p>You are not a member of any organization.</p>
+        <button 
+          onClick={async () => {
+            if (isCreatingOrg) return;
+            const name = prompt('Enter Organization Name:');
+            if (name) {
+              setIsCreatingOrg(true);
+              try {
+                await createOrg({ variables: { name, userId } });
+                await refetch();
+              } catch (e) {
+                console.error(e);
+                alert("Failed to create organization. Check permissions.");
+              }
+              setIsCreatingOrg(false);
+            }
+          }}
+          disabled={isCreatingOrg}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+        >
+          {isCreatingOrg ? 'Creating...' : 'Create Organization'}
+        </button>
+      </div>
+    );
+  }
 
   // For simplicity in this assignment demo, we'll just use the first org the user is part of.
   const org = orgs[0];

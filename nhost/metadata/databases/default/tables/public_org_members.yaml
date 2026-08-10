@@ -23,12 +23,8 @@ insert_permissions:
 - role: user
   permission:
     check:
-      organization:
-        org_members:
-          user_id:
-            _eq: X-Hasura-User-Id
-          role:
-            _eq: owner
+      user_id:
+        _eq: X-Hasura-User-Id
     columns:
     - user_id
     - org_id
