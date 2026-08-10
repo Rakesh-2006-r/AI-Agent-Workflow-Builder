@@ -1,0 +1,122 @@
+table:
+  name: workflow_steps
+  schema: public
+object_relationships:
+  - name: workflow
+    using:
+      foreign_key_constraint_on: workflow_id
+select_permissions:
+  - role: owner
+    permission:
+      columns:
+        - id
+        - workflow_id
+        - type
+        - config
+        - step_order
+        - created_at
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+  - role: editor
+    permission:
+      columns:
+        - id
+        - workflow_id
+        - type
+        - config
+        - step_order
+        - created_at
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - workflow_id
+        - type
+        - config
+        - step_order
+        - created_at
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+insert_permissions:
+  - role: owner
+    permission:
+      check:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - workflow_id
+        - type
+        - config
+        - step_order
+  - role: editor
+    permission:
+      check:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - workflow_id
+        - type
+        - config
+        - step_order
+update_permissions:
+  - role: owner
+    permission:
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - type
+        - config
+        - step_order
+  - role: editor
+    permission:
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - type
+        - config
+        - step_order
+delete_permissions:
+  - role: owner
+    permission:
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+  - role: editor
+    permission:
+      filter:
+        workflow:
+          organization:
+            org_members:
+              user_id:
+                _eq: X-Hasura-User-Id
