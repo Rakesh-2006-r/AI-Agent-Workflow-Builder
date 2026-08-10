@@ -1,5 +1,4 @@
-import { Request, Response } from 'express';
-import fetch from 'node-fetch'; // Requires node-fetch if Node < 18, Nhost has Node 18+ fetch built-in but we assume standard Node handler
+import { Request, Response } from 'express'; // Requires node-fetch if Node < 18, Nhost has Node 18+ fetch built-in but we assume standard Node handler
 
 export default async function handler(req: Request, res: Response) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });

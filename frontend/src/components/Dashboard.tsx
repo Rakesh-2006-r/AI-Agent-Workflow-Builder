@@ -1,4 +1,5 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client/react';
 import { useState } from 'react';
 import WorkflowBuilder from './WorkflowBuilder';
 import { Plus, Settings, Play } from 'lucide-react';
