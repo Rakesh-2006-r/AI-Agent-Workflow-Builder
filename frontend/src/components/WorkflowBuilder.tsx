@@ -39,13 +39,14 @@ const UPDATE_WORKFLOW_STEPS = gql`
   }
 `;
 
-// Assuming a standard fetch call for the Nhost function
+import { nhost } from '@/lib/nhost';
+
 async function triggerWorkflowRun(workflow_id: string, nhostUrl: string) {
-  const res = await fetch(`${nhostUrl}/v1/functions/triggerWorkflowRun`, {
+  const res = await fetch(`${nhostUrl}/triggerWorkflowRun`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // In a real app we'd pass the Nhost PAT or JWT here
+      'Authorization': `Bearer ${nhost.auth.getAccessToken()}`
     },
     body: JSON.stringify({ input: { workflow_id } })
   });
@@ -90,7 +91,7 @@ export default function WorkflowBuilder({ workflowId, orgRole, onBack }: { workf
 
   const handleRun = async () => {
     try {
-      const result = await triggerWorkflowRun(workflowId, process.env.NEXT_PUBLIC_NHOST_BACKEND_URL || 'http://localhost:1337');
+      const result = await triggerWorkflowRun(workflowId, nhost.functions.url);
       setActiveRunId(result.run_id);
     } catch (e: any) {
       alert("Failed to trigger run: " + e.message);
