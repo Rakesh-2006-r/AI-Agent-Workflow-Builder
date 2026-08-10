@@ -1,7 +1,7 @@
 table:
   name: organizations
   schema: public
-object_relationships:
+array_relationships:
 - name: org_members
   using:
     foreign_key_constraint_on:
