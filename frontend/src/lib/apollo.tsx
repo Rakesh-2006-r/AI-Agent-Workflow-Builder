@@ -1,5 +1,6 @@
 'use client';
-import { ApolloClient, InMemoryCache, ApolloProvider as BaseApolloProvider, createHttpLink, split } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, split } from '@apollo/client';
+import { ApolloProvider as BaseApolloProvider } from '@apollo/client/react';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
