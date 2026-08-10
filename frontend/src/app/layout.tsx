@@ -1,6 +1,6 @@
 'use client';
 import { NhostProvider } from '@nhost/nextjs';
-import { NhostApolloProvider } from '@nhost/react-apollo';
+import { ApolloProvider } from '@/lib/apollo';
 import { nhost } from '@/lib/nhost';
 import './globals.css';
 
@@ -13,9 +13,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NhostProvider nhost={nhost}>
-          <NhostApolloProvider nhost={nhost}>
+          <ApolloProvider>
             {children}
-          </NhostApolloProvider>
+          </ApolloProvider>
         </NhostProvider>
       </body>
     </html>
